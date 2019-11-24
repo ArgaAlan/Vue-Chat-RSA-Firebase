@@ -191,6 +191,8 @@ export default {
     };
   },
 
+  encryption() {},
+
   methods: {
     scrollToBottom() {
       let box = document.querySelector(".msg_history");
@@ -431,7 +433,7 @@ img {
 
 .sent_msg {
   float: right;
-  width: 46%;
+  width: 52%;
 }
 
 .input_msg_write input {
