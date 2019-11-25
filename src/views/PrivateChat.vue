@@ -191,8 +191,6 @@ export default {
     };
   },
 
-  encryption() {},
-
   methods: {
     scrollToBottom() {
       let box = document.querySelector(".msg_history");
@@ -202,12 +200,76 @@ export default {
       //Guarda a firestone
       db.collection("chat")
         .add({
-          message: this.message,
+          message: function() {
+            //ENCRYPTION CODE
+            //Primes before 100
+            var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+            //Definition of my two primes
+            var fPrime = primes[Math.floor(Math.random() * primes.length)];
+            var sPrime = primes[Math.floor(Math.random() * primes.length)];
+            while (sPrime == fPrime) {
+              sPrime = primes[Math.floor(Math.random() * primes.length)];
+            }
+
+            var n = fPrime * sPrime;
+            var phiN = (fPrime - 1) * (sPrime - 1);
+            var e; //MCD de n y phiN
+
+            for (e = 2; e < phiN - 1; e++) {
+              var found = true;
+              for (var j = 2; j < phiN - 1; j++) {
+                if (n % j != 0 && phiN % j != 0) {
+                  found = false;
+                  break;
+                }
+              }
+              if (found) {
+                break;
+              }
+            }
+
+            var d = 2;
+            while ((d * e) % phiN != 1) {
+              d++;
+              if (d > phiN) {
+                break;
+              }
+            }
+
+            alert("n:" + n + " phiN:" + phiN + " e:" + e + " d:" + d);
+
+            /*
+            //Descomponer en primos para encontrar e
+            var coprimesN = [];
+            var coprimespN = [];
+
+            //Obtengo todos los primos
+            var cn = n;
+            var i = 0;
+            while (n != 1) {
+              if (cn % primes[i] == 0) {
+                cn = cn / primes[i];
+                if (!coprimesN.includes(primes[i])) {
+                  coprimesN.push(primes[i]);
+                }
+              } else {
+                i++;
+              }
+            }*/
+            //ENCRYPTION CODE
+            var encrypted = "";
+            var message = this.message;
+
+            for (let i = 0; i < message.length; i++) {
+              //CODIGO PARA ENCRIPTAR LOS NUMEROS
+            }
+          },
           author: this.authUser.displayName,
           createdAt: new Date()
         })
         .then(() => {
           this.scrollToBottom();
+          this.encryption();
         });
 
       this.message = null;
@@ -227,6 +289,62 @@ export default {
             this.scrollToBottom();
           }, 1000);
         });
+    },
+    encryption() {
+      //Primes before 100
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+      //Definition of my two primes
+      var fPrime = primes[Math.floor(Math.random() * primes.length)];
+      var sPrime = primes[Math.floor(Math.random() * primes.length)];
+      while (sPrime == fPrime) {
+        sPrime = primes[Math.floor(Math.random() * primes.length)];
+      }
+
+      var n = fPrime * sPrime;
+      var phiN = (fPrime - 1) * (sPrime - 1);
+      var e; //MCD de n y phiN
+
+      for (e = 2; e < phiN - 1; e++) {
+        var found = true;
+        for (var j = 2; j < phiN - 1; j++) {
+          if (n % j != 0 && phiN % j != 0) {
+            found = false;
+            break;
+          }
+        }
+        if (found) {
+          break;
+        }
+      }
+
+      var d = 2;
+      while ((d * e) % phiN != 1) {
+        d++;
+        if (d > phiN) {
+          break;
+        }
+      }
+
+      alert("n:" + n + " phiN:" + phiN + " e:" + e + " d:" + d);
+
+      /*
+    //Descomponer en primos para encontrar e
+    var coprimesN = [];
+    var coprimespN = [];
+
+    //Obtengo todos los primos
+    var cn = n;
+    var i = 0;
+    while (n != 1) {
+      if (cn % primes[i] == 0) {
+        cn = cn / primes[i];
+        if (!coprimesN.includes(primes[i])) {
+          coprimesN.push(primes[i]);
+        }
+      } else {
+        i++;
+      }
+    }*/
     }
   },
 
