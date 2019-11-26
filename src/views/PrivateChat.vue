@@ -285,13 +285,26 @@ export default {
               "w",
               "x",
               "y",
-              "z"
+              "z",
+              " ",
+              "!",
+              "?",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "0"
             ];
             for (let j = 0; j < message.length - 3; j++) {
               var x = message[j];
               console.log(x);
-              var y = bigInt(x).pow(103);
-              var z = y.mod(143);
+              var y = bigInt(x).pow(message[message.length - 3]);
+              var z = y.mod(message[message.length - 2]);
               console.log(z);
               //x = Math.pow(x, e) % n;
               //console.log(x + " = " + y);
@@ -312,12 +325,38 @@ export default {
     //Encriptacion de los valoresssssssssssss
     encryption() {
       //Primes before 100
-      var primes = [2, 3, 5, 7, 11, 13];
+      var primes = [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17,
+        19,
+        23,
+        29,
+        31,
+        37,
+        41,
+        43,
+        47,
+        53,
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97
+      ];
       //Definition of my two primes
-      var fPrime = 11;
-      var sPrime = 13;
+      var fPrime = 29;
+      var sPrime = 31;
       while (sPrime == fPrime) {
-        sPrime = primes[Math.floor(Math.random() * primes.length)];
+        sPrime = primes[Math.floor(Math.random() * primes.length + 2)];
       }
 
       var n = fPrime * sPrime;
@@ -420,7 +459,20 @@ export default {
         "w",
         "x",
         "y",
-        "z"
+        "z",
+        " ",
+        "!",
+        "?",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"
       ];
 
       for (let i = 0; i < message.length; i++) {
