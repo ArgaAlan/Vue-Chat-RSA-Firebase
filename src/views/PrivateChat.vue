@@ -23,7 +23,10 @@
             <div class="chat_list active_chat">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -40,7 +43,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -57,7 +63,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -74,7 +83,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -91,7 +103,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -108,7 +123,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -125,7 +143,10 @@
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img">
-                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
+                  <img
+                    src="https://ptetutorials.com/images/user-profile.png"
+                    alt="sunil"
+                  />
                 </div>
                 <div class="chat_ib">
                   <h5>
@@ -144,10 +165,16 @@
         <div class="mesgs">
           <div class="msg_history">
             <div v-for="message in messages">
-              <div :class="[message.author===authUser.displayName?'sent_msg':'received_msg']">
+              <div
+                :class="[
+                  message.author === authUser.displayName
+                    ? 'sent_msg'
+                    : 'received_msg'
+                ]"
+              >
                 <div class="received_withd_msg">
-                  <p>{{message.message}}</p>
-                  <span class="time_date">{{message.author}}</span>
+                  <p>{{ message.encrypted }}</p>
+                  <span class="time_date">{{ message.author }}</span>
                 </div>
               </div>
             </div>
@@ -155,7 +182,7 @@
           <div class="type_msg">
             <div class="input_msg_write">
               <input
-                @keyup.enter="saveMessage"
+                @keyup.enter="encryption"
                 v-model="message"
                 type="text"
                 class="write_msg"
@@ -187,7 +214,9 @@ export default {
     return {
       message: null,
       messages: [],
-      authUser: {}
+      deencrypted: [],
+      authUser: {},
+      encrypted: null
     };
   },
 
@@ -200,76 +229,13 @@ export default {
       //Guarda a firestone
       db.collection("chat")
         .add({
-          message: function() {
-            //ENCRYPTION CODE
-            //Primes before 100
-            var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
-            //Definition of my two primes
-            var fPrime = primes[Math.floor(Math.random() * primes.length)];
-            var sPrime = primes[Math.floor(Math.random() * primes.length)];
-            while (sPrime == fPrime) {
-              sPrime = primes[Math.floor(Math.random() * primes.length)];
-            }
-
-            var n = fPrime * sPrime;
-            var phiN = (fPrime - 1) * (sPrime - 1);
-            var e; //MCD de n y phiN
-
-            for (e = 2; e < phiN - 1; e++) {
-              var found = true;
-              for (var j = 2; j < phiN - 1; j++) {
-                if (n % j != 0 && phiN % j != 0) {
-                  found = false;
-                  break;
-                }
-              }
-              if (found) {
-                break;
-              }
-            }
-
-            var d = 2;
-            while ((d * e) % phiN != 1) {
-              d++;
-              if (d > phiN) {
-                break;
-              }
-            }
-
-            alert("n:" + n + " phiN:" + phiN + " e:" + e + " d:" + d);
-
-            /*
-            //Descomponer en primos para encontrar e
-            var coprimesN = [];
-            var coprimespN = [];
-
-            //Obtengo todos los primos
-            var cn = n;
-            var i = 0;
-            while (n != 1) {
-              if (cn % primes[i] == 0) {
-                cn = cn / primes[i];
-                if (!coprimesN.includes(primes[i])) {
-                  coprimesN.push(primes[i]);
-                }
-              } else {
-                i++;
-              }
-            }*/
-            //ENCRYPTION CODE
-            var encrypted = "";
-            var message = this.message;
-
-            for (let i = 0; i < message.length; i++) {
-              //CODIGO PARA ENCRIPTAR LOS NUMEROS
-            }
-          },
+          encrypted: this.encrypted,
+          message: this.message,
           author: this.authUser.displayName,
           createdAt: new Date()
         })
         .then(() => {
           this.scrollToBottom();
-          this.encryption();
         });
 
       this.message = null;
@@ -283,19 +249,73 @@ export default {
           querySnapshot.forEach(doc => {
             allMessages.push(doc.data());
           });
+          let deEncryptedMessages = [];
+          for (let i = 0; i < allMessages.length; i++) {
+            var str = allMessages[i].encrypted;
+            console.log(str);
+            let message = str.split(",");
+            var deEncrypted = "";
+            var bigInt = require("big-integer");
+            //console.log(Math.pow(message[0], message[message.length - 3]));
+            //console.log(message[message.length - 3]);
+            //console.log(message[message.length - 2]);
+            var letters = [
+              "a",
+              "b",
+              "c",
+              "d",
+              "e",
+              "f",
+              "g",
+              "h",
+              "i",
+              "j",
+              "k",
+              "l",
+              "m",
+              "n",
+              "o",
+              "p",
+              "q",
+              "r",
+              "s",
+              "t",
+              "u",
+              "v",
+              "w",
+              "x",
+              "y",
+              "z"
+            ];
+            for (let j = 0; j < message.length - 3; j++) {
+              var x = message[j];
+              console.log(x);
+              var y = bigInt(x).pow(103);
+              var z = y.mod(143);
+              console.log(z);
+              //x = Math.pow(x, e) % n;
+              //console.log(x + " = " + y);
+              deEncrypted += letters[z];
+            }
+            console.log(deEncrypted);
+            allMessages[i].encrypted = deEncrypted;
+          }
           this.messages = allMessages;
+          this.deencrypted = deEncryptedMessages;
 
           setTimeout(() => {
             this.scrollToBottom();
           }, 1000);
         });
     },
+
+    //Encriptacion de los valoresssssssssssss
     encryption() {
       //Primes before 100
-      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+      var primes = [2, 3, 5, 7, 11, 13];
       //Definition of my two primes
-      var fPrime = primes[Math.floor(Math.random() * primes.length)];
-      var sPrime = primes[Math.floor(Math.random() * primes.length)];
+      var fPrime = 11;
+      var sPrime = 13;
       while (sPrime == fPrime) {
         sPrime = primes[Math.floor(Math.random() * primes.length)];
       }
@@ -304,6 +324,31 @@ export default {
       var phiN = (fPrime - 1) * (sPrime - 1);
       var e; //MCD de n y phiN
 
+      function gcd(a, b) {
+        if (a < b) {
+          b = [a, (a = b)][0];
+        }
+        return a % b == 0 ? b : gcd(b, a % b);
+      }
+
+      for (let i = 0; i < primes.length; i++) {
+        if (gcd(primes[i], phiN) == 1) {
+          e = primes[i];
+          break;
+        }
+      }
+
+      var k = 2;
+      var eTemp = e;
+      var d = 1;
+      eTemp = eTemp % phiN;
+      for (let x = 0; x < phiN; x++) {
+        if ((eTemp * x) % phiN == 1) {
+          d = x;
+        }
+      }
+
+      /*
       for (e = 2; e < phiN - 1; e++) {
         var found = true;
         for (var j = 2; j < phiN - 1; j++) {
@@ -324,7 +369,7 @@ export default {
           break;
         }
       }
-
+      */
       alert("n:" + n + " phiN:" + phiN + " e:" + e + " d:" + d);
 
       /*
@@ -345,6 +390,51 @@ export default {
         i++;
       }
     }*/
+      //ENCRYPTION CODE
+      var encrypted = "";
+      var message = this.message;
+
+      var letters = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z"
+      ];
+
+      for (let i = 0; i < message.length; i++) {
+        //CODIGO PARA ENCRIPTAR LOS NUMEROS
+        var x = letters.indexOf(message.toLowerCase().charAt(i));
+        //console.log(x);
+        x = Math.pow(x, e) % n;
+        encrypted += x + ",";
+      }
+      encrypted += d + ",";
+      encrypted += n + ",";
+      //alert(encrypted);
+      this.encrypted = encrypted;
+      this.saveMessage();
     }
   },
 
